@@ -1,9 +1,11 @@
-import { Box, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid2, Pagination, Paper, Radio, RadioGroup, TextField, Typography } from "@mui/material";
+import { Box, Checkbox, FormControl, FormControlLabel, FormGroup, Grid2, Pagination, Paper, Radio, RadioGroup, Typography } from "@mui/material";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import { fetchFilters, fetchProductsAsync, productSeletors } from "./catalogSlice";
+import { fetchFilters, fetchProductsAsync, productSeletors, setProductParams } from "./catalogSlice";
 import ProductList from "./ProductList";
 import { useEffect } from "react";
+import ProductSearch from "../ProductSearch";
+import RadioButtonGroup from "../../app/components/RadioButtonGroup";
 
 const sortOptions = [
   { value: 'name', label: 'Alphabetical' },
@@ -16,14 +18,14 @@ const sortOptions = [
 export default function Catalog() {
 
   const products = useAppSelector(productSeletors.selectAll);
-  const { productsLoaded, status, filtersLoaded, brands, types } = useAppSelector(state => state.catalog);
+  const { productsLoaded, status, filtersLoaded, brands, types, productParams } = useAppSelector(state => state.catalog);
   const dispatch = useAppDispatch();
 
 
   useEffect(() => {
     if (!productsLoaded) dispatch(fetchProductsAsync());
 
-  }, [dispatch, productsLoaded])
+  }, [productsLoaded, dispatch])
 
 
 
@@ -43,24 +45,16 @@ export default function Catalog() {
 
       <Grid2 size={3}>
         <Paper sx={{ mb: 2 }}>
-          <TextField
-            label='Search products'
-            variant='outlined'
-            fullWidth
-          />
+         <ProductSearch />
 
         </Paper>
 
         <Paper sx={{ mb: 2, p: 2 }}>
-          <FormControl>
-
-            <RadioGroup>
-              {sortOptions.map(({ value, label }) => (
-                <FormControlLabel value={value} control={<Radio />} label={label} key={value} />
-
-              ))}
-            </RadioGroup>
-          </FormControl>
+          <RadioButtonGroup 
+          selectedValue={productParams.orderBy}
+          options={sortOptions}
+          onChange={(e) => dispatch(setProductParams({orderBy: e.target.value}))}
+          />
         </Paper>
 
         <Paper sx={{ mb: 2, p: 2 }}>

@@ -38,7 +38,7 @@ public class AccountController : BaseApiController
         {
             Email = user.Email,
             Token = await _tokenService.GenerateToken(user),
-           // Basket = anonBasket != null ? anonBasket.MapBasketToDto() : userBasket?.MapBasketToDto()
+            Basket = anonBasket != null ? anonBasket.MapBasketToDto() : userBasket?.MapBasketToDto()
         };
     }
     [HttpPost("register")]
@@ -67,7 +67,7 @@ public class AccountController : BaseApiController
         {
             Email = user.Email,
             Token = await _tokenService.GenerateToken(user),
-            //Basket = userBasket?.MapBasketToDto()
+            Basket = userBasket?.MapBasketToDto()
         };
     }
     private async Task<Basket> RetrieveBasket(string buyerId)

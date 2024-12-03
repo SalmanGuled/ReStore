@@ -43,11 +43,11 @@ export default function CheckoutPage() {
             })
     }, [methods])
     const handleNext = async (data: FieldValues) => {
-        const { saveAddress, ...shippingAddress} = data;
+        const {nameOnCard, saveAddress, ...shippingAddress} = data;
         if (activeStep === steps.length - 1) {
             setLoading(true);
             try {
-                const order = await agent.Orders.create({saveAddress, shippingAddress});
+                const order = await agent.Orders.create({nameOnCard, saveAddress, shippingAddress});
                 setOrderNumber(order);
                 setActiveStep(activeStep + 1);
                 dispatch(clearBasket());

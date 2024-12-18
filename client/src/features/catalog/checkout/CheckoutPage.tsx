@@ -47,7 +47,7 @@ export default function CheckoutPage() {
         if (activeStep === steps.length - 1) {
             setLoading(true);
             try {
-                const order = await agent.Orders.create({nameOnCard, saveAddress, shippingAddress});
+                const order = await agent.Orders.create({ saveAddress, shippingAddress});
                 setOrderNumber(order);
                 setActiveStep(activeStep + 1);
                 dispatch(clearBasket());
